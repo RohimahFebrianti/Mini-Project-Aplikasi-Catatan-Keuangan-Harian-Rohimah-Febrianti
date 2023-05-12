@@ -1,14 +1,12 @@
 import 'package:apk_catatan_keuangan_harian/view/kategori/category_screen.dart';
-import 'package:apk_catatan_keuangan_harian/view/dashboard/dashboard_screen.dart';
-import 'package:apk_catatan_keuangan_harian/view_model/db_manager.dart';
+import 'package:apk_catatan_keuangan_harian/view_model/category_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../model/data_caku.dart';
 import '../../model/data_category.dart';
-import '../../style/decoration.dart';
+import '../../components/style/decoration.dart';
 import '../../view_model/caku_manager.dart';
 
 class FormCaku extends StatefulWidget {
@@ -42,7 +40,6 @@ class _FormCakuState extends State<FormCaku> {
       amountController.text = widget.cakuModel!.amount.toString();
       descriptionController.text = widget.cakuModel!.description;
       dateController.text = widget.cakuModel!.date;
-      // _selectedCategory = widget.cakuModel!.categoryId;
       _isUpdate = true;
     }
     super.initState();
@@ -82,23 +79,7 @@ class _FormCakuState extends State<FormCaku> {
             children: [
               fromField(context),
               buildButton(context),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      _navigateToForm(_isExpense);
-                    },
-                    child: Text(
-                      _isExpense
-                          ? 'Tambah Kategori Pengeluaran'
-                          : 'Tambah Kategori Pemasukan',
-                      style: GoogleFonts.montserrat(
-                          fontSize: 14, color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
+              toDoCategory(),
             ],
           ),
         ),
@@ -115,12 +96,27 @@ class _FormCakuState extends State<FormCaku> {
           child: TextFormField(
             controller: amountController,
             keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == null) {
+                return 'Harap masukkan jumlah uang';
+              }
+              final amount = int.tryParse(value);
+              if (amount == null) {
+                return 'Masukkan angka yang valid';
+              }
+              if (amount < 1000) {
+                return 'Jumlah uang harus minimal Rp 1.000';
+              }
+              if (amount > 100000000) {
+                return 'Jumlah uang tidak boleh melebihi Rp 100.000.000';
+              }
+              return null;
+            },
             decoration: InputDecorationStyle.inputDecorationStyle(
               labelText: 'Jumlah Uang',
             ),
           ),
         ),
-        //
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Consumer<CategoryManager>(
@@ -150,7 +146,6 @@ class _FormCakuState extends State<FormCaku> {
                           .map((category) => DropdownMenuItem(
                               value: category, child: Text(category.name)))
                           .toList(),
-                      //  value: _selectedCategory, // tambahkan initialValue
                       validator: (value) {
                         if (value == null) {
                           return 'Category is required';
@@ -201,10 +196,8 @@ class _FormCakuState extends State<FormCaku> {
                   },
                 );
                 if (selectDate != null) {
-                  //print(selectDate);
                   final formatDate =
                       DateFormat('dd MMMM yyyy').format(_selectedDate);
-                  //print(formatDate);
                   setState(() {
                     dateController.text = formatDate;
                   });
@@ -231,13 +224,19 @@ class _FormCakuState extends State<FormCaku> {
             decoration: InputDecorationStyle.inputDecorationStyle(
               labelText: 'Deskripsi',
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please input Deskripsi';
+              }
+              return null;
+            },
           ),
         ),
       ],
     );
   }
 
-  Container buildButton(BuildContext context) {
+  Widget buildButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: ElevatedButton(
@@ -246,7 +245,6 @@ class _FormCakuState extends State<FormCaku> {
             backgroundColor: const Color(0xffc3516b)),
         onPressed: () async {
           final typeValue = _isExpense ? 'Expense' : 'Income';
-
           if (!_isUpdate) {
             final newCaku = Caku(
                 amount: int.parse(amountController.text),
@@ -274,14 +272,6 @@ class _FormCakuState extends State<FormCaku> {
                 type: typeValue);
             Provider.of<CakuManager>(context, listen: false)
                 .updateCaku(updateCaku);
-            // int amount = int.parse(amountController.text);
-            // CakuManager cakuManager =
-            //     Provider.of<CakuManager>(context, listen: false);
-            // if (widget.isExpense) {
-            //   cakuManager.updatePengeluaran(widget.cakuModel!.id!, amount);
-            // } else {
-            //   cakuManager.updatePemasukan(widget.cakuModel!.id!, amount);
-            // }
           }
           Navigator.pop(context);
         },
@@ -290,6 +280,25 @@ class _FormCakuState extends State<FormCaku> {
           style: GoogleFonts.montserrat(fontSize: 16),
         ),
       ),
+    );
+  }
+
+  Widget toDoCategory() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          onPressed: () {
+            _navigateToForm(_isExpense);
+          },
+          child: Text(
+            _isExpense
+                ? 'Tambah Kategori Pengeluaran'
+                : 'Tambah Kategori Pemasukan',
+            style: GoogleFonts.montserrat(fontSize: 14, color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 }

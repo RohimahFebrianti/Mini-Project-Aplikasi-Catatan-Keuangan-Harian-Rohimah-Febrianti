@@ -12,12 +12,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late bool isExpense;
-  late DateTime selectDate;
-  late List<Widget> _children;
+  late List<Widget> _menu;
   late int currentIndex;
   int selectedIndex = 0;
-  bool _isFabExpanded = false;
+  bool _isView = false;
 
   void _navigateToForm(bool isExpense) {
     Navigator.push(
@@ -48,7 +46,7 @@ class _HomeState extends State<Home> {
   void updateView(int index) {
     setState(() {
       currentIndex = index;
-      _children = [const Dashboard(), const HistoryPage()];
+      _menu = [const Dashboard(), const HistoryPage()];
     });
   }
 
@@ -56,7 +54,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: _children[currentIndex],
+        child: _menu[currentIndex],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -67,7 +65,7 @@ class _HomeState extends State<Home> {
               backgroundColor: const Color(0xffd59caf),
               onPressed: () {
                 setState(() {
-                  _isFabExpanded = !_isFabExpanded;
+                  _isView = !_isView;
                 });
               },
               child: const Icon(
@@ -76,7 +74,7 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          if (_isFabExpanded)
+          if (_isView)
             Container(
               margin: const EdgeInsets.only(bottom: 16),
               child: Column(

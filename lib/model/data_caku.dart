@@ -5,9 +5,6 @@ class Caku {
   late String date;
   late String description;
   late String type;
-  // late String? masuk;
-  // late String? keluar;
-  // late String? saldo;
 
   Caku(
       {this.id,
@@ -15,11 +12,7 @@ class Caku {
       required this.categoryId,
       required this.date,
       required this.description,
-      required this.type
-      // this.masuk,s
-      // this.keluar,
-      // this.saldo
-      });
+      required this.type});
 
   Map<String, dynamic> toMap() {
     return {
@@ -29,9 +22,6 @@ class Caku {
       'date': date,
       'description': description,
       'type': type
-      // 'masuk': masuk,
-      // 'keluar': keluar,
-      // 'saldo': saldo,
     };
   }
 
@@ -43,14 +33,4 @@ class Caku {
     description = map['description'];
     type = map['type'];
   }
-
-  // Caku copyWith(int? amount, int? categoryId, String? date, String? description,
-  //     String? type) {
-  //   return Caku(
-  //       amount: amount ?? this.amount,
-  //       categoryId: categoryId ?? this.categoryId,
-  //       date: date ?? this.date,
-  //       description: description ?? this.description,
-  //       type: type ?? this.type);
-  // }
 }

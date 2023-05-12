@@ -28,14 +28,18 @@ class CakuManager extends ChangeNotifier {
   }
 
   int getTotalPemasukan() {
-    int totalMasuk = 1200000;
-    _pemasukan.forEach((item) => totalMasuk += item['amount']!);
+    int totalMasuk = 1900000;
+    for (var item in _pemasukan) {
+      totalMasuk += item['amount']!;
+    }
     return totalMasuk;
   }
 
   int getTotalPengeluaran() {
-    int totalKeluar = 550000;
-    _pengeluaran.forEach((item) => totalKeluar += item['amount']!);
+    int totalKeluar = 910000;
+    for (var item in _pengeluaran) {
+      totalKeluar += item['amount']!;
+    }
     return totalKeluar;
   }
 
@@ -50,36 +54,6 @@ class CakuManager extends ChangeNotifier {
     totalPemasukan += amount;
     notifyListeners();
   }
-
-  // void updatePemasukan(int index, int amount) {
-  //   if (index < 0 || index >= _pemasukan.length) {
-  //     return;
-  //   }
-  //   int oldAmount = _pemasukan[index]['amount']!;
-  //   _pemasukan[index]['amount'] = amount;
-  //   totalPemasukan = totalPemasukan - oldAmount + amount;
-  //   notifyListeners();
-  // }
-
-  // void updatePengeluaran(int index, int amount) {
-  //   if (index < 0 || index >= _pengeluaran.length) {
-  //     return;
-  //   }
-  //   int oldAmount = _pengeluaran[index]['amount']!;
-  //   _pengeluaran[index]['amount'] = amount;
-  //   totalPengeluaran = totalPemasukan - oldAmount + amount;
-  //   notifyListeners();
-  // }
-
-  // void hapusPemasukan(int index) {
-  //   if (index < 0 || index >= _pemasukan.length) {
-  //     return;
-  //   }
-  //   int amount = _pemasukan[index]['amount']!;
-  //   _pemasukan.removeAt(index);
-  //   totalPemasukan -= amount;
-  //   notifyListeners();
-  // }
 
   void _getAllCaku() async {
     _cakuListModels = await _dbHelper.getCaku();

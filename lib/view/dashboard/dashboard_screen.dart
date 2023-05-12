@@ -43,7 +43,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     initial();
-    // _loadData();
     super.initState();
   }
 
@@ -60,7 +59,6 @@ class _DashboardState extends State<Dashboard> {
     int totalPemasukan = cakuManager.getTotalPemasukan();
     int totalPengeluaran = cakuManager.getTotalPengeluaran();
     int saldo = totalPemasukan - totalPengeluaran;
-
     return SafeArea(
       child: Column(
         children: [
@@ -113,7 +111,7 @@ class _DashboardState extends State<Dashboard> {
 
   Widget widgetSaldo(int saldo) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      margin: const EdgeInsets.only(left: 16, right: 16),
       padding: const EdgeInsets.all(20),
       width: double.infinity,
       height: 120,
@@ -295,8 +293,6 @@ class _DashboardState extends State<Dashboard> {
             style:
                 GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          //const Text('Date'),
-
           const SizedBox(
             width: 20,
           ),

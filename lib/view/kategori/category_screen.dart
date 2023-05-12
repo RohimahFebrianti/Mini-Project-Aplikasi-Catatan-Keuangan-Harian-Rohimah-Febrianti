@@ -1,4 +1,4 @@
-import 'package:apk_catatan_keuangan_harian/view_model/db_manager.dart';
+import 'package:apk_catatan_keuangan_harian/view_model/category_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +20,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  bool _isExpense = false;
+  bool _isExpense = true;
   int type = 1;
   final categoryNameController = TextEditingController();
 
@@ -63,6 +63,12 @@ class _CategoryPageState extends State<CategoryPage> {
                       border: OutlineInputBorder(),
                       hintText: 'Name',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please input name category';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 10,
@@ -76,7 +82,8 @@ class _CategoryPageState extends State<CategoryPage> {
                         final cate = Categoryes(
                             name: categoryNameController.text,
                             type: _isExpense ? 'Expense' : 'Income');
-                        await Provider.of<CategoryManager>(context, listen: false)
+                        await Provider.of<CategoryManager>(context,
+                                listen: false)
                             .addCategory(cate);
                       } else {
                         final cate = Categoryes(
@@ -162,7 +169,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                        content: Text('${item.name} Deleted')),
+                                      content: Text('${item.name} Deleted'),
+                                    ),
                                   );
                                 },
                               ),

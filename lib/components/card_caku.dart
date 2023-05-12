@@ -62,21 +62,6 @@ class _CardCakuState extends State<CardCaku> {
                           ),
                         ),
                         TextButton(
-                          // onPressed: () {
-                          //   manager.deleteJoin(item.id!);
-                          //   // manager.hapusPemasukan(
-                          //   //     index);
-                          //   // manager.hapusPengeluaran(
-                          //   //     index);
-                          //   Navigator.pop(context);
-                          //   setState(() {
-                          //     totalPemasukan =
-                          //         manager.getTotalPemasukan();
-                          //     totalPengeluaran =
-                          //         manager.getTotalPengeluaran();
-                          //     saldo = totalPemasukan - totalPengeluaran;
-                          //   });
-                          // },
                           onPressed: widget.onPressed,
                           child: Text(
                             'Iya',
@@ -97,7 +82,9 @@ class _CardCakuState extends State<CardCaku> {
           leading: Container(
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Icon(
                 widget.catatan.type == 'Expense'
                     ? Icons.arrow_circle_up
@@ -124,7 +111,6 @@ class _CardCakuState extends State<CardCaku> {
               const SizedBox(height: 5),
               Text(
                 formatter.format(widget.catatan.amount),
-                //'Rp. ${widget.catatan.amount}',
                 style: GoogleFonts.poppins(
                     fontSize: 16, fontWeight: FontWeight.w700),
               ),

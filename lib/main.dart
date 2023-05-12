@@ -2,7 +2,7 @@ import 'package:apk_catatan_keuangan_harian/view/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'view_model/caku_manager.dart';
-import 'view_model/db_manager.dart';
+import 'view_model/category_manager.dart';
 
 void main() {
   runApp(
